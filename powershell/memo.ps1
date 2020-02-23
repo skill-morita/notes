@@ -28,11 +28,11 @@ New-Item $path\$newPgcd -ItemType Directory -Force
 
 # XML取得
 $path = "C:\TEMP\a.xml"
-$xmlDoc = [xml](cat $path -enc UTF8)
+$xmlDoc = [xml](Get-Content $path -enc UTF8)
 $xmlNav = $xmlDoc.CreateNavigator()
 
 # XPathで取得(「AAAA」が含まれているliを持つdiv)
-$xmlNav.Select(".//div[contains(./ol/li/text(), 'AAAA')]") | %{
+$xmlNav.Select(".//div[contains(./ol/li/text(), 'AAAA')]") | ForEach-Object{
     # 属性取得(divの名前)
     $_.GetAttribute("Name", "")
     # 値取得(liの中身)
@@ -47,3 +47,9 @@ China
 India
 Japan
 "@ -Split "`r`n"
+
+# 時間を計測する
+Measure-Command {
+    Get-ChildItem $path\*.xls*
+    New-Item $path\$newPgcd -ItemType Directory -Force
+}
