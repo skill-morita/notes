@@ -5,7 +5,7 @@ DIM ie = CREATEOLEOBJ("InternetExplorer.Application")
 DIM ie = GETACTIVEOLEOBJ("InternetExplorer.Application", "ページタイトル")
 
 //Frameを取得
-//<frame name="fr"></frame>
+//<Frame name="fr"></Frame>
 Dim fr = IEGETFRAME(IE, "fr")
 
 //onChangeを発生させる
@@ -16,3 +16,11 @@ obj.onChange()
 //配列の引数
 function hoge(str[]){
 }
+
+//DOMの存在チェック
+//✗
+IF ie.document.getElementsByTagName("Frame").lentgh() > 0 THEN
+ENDIF
+//○
+IF IEGETFRAME(ie, "Frame") <> EMPTY THEN
+ENDIF
