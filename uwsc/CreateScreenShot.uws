@@ -1,0 +1,7 @@
+//Windows標準
+DIM id = GETID(GET_ACTIVE_WIN)
+SAVEIMG("screenshot", id)
+
+//GreenShot
+DIM id = EXEC("GreenShot")
+SCKEY(id, VK_CTRL, VK_BACK, VK_SNAPSHOT)
