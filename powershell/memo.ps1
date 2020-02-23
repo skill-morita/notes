@@ -24,7 +24,14 @@ $pgcds = $baseNames.foreach{
 $newPgcd = $pgcd -replace "PG", "Program"
 
 # フォルダ作成
-New-Item $path\$newPgcd -ItemType Directory -Force
+$dirPath = "C:\TEMP"
+New-Item $path -ItemType Directory -Force
+
+# 存在確認しつつフォルダ作成
+$dirPath = "C:\TEMP"
+if(!(Test-Path $dirPath)){
+    New-Item $dirPath -ItemType Directory
+}
 
 # XML取得
 $path = "C:\TEMP\a.xml"
@@ -53,3 +60,21 @@ Measure-Command {
     Get-ChildItem $path\*.xls*
     New-Item $path\$newPgcd -ItemType Directory -Force
 }
+
+# 配下のファイル取得
+$dirPath = "C:\TEMP"
+$file = Get-ChildItem $dirPath\*.xml*
+$file # 表示
+
+# 絞り込みながら再帰でサブフォルダ内も検索
+$dirPath = "C:\TEMP"
+$file = Get-ChildItem $dirPath\*.xml* -Recurse -Filter aaa* `
+$file | Select-Object FullName # ファイルパス表示
+$file | Get-Content # ファイル読取
+
+# 指定文字列を含むものを除外する
+$dirPath = "C:\TEMP"
+$file = Get-ChildItem $dirPath\*.xml* | Where-Object {$_ -NotLike "aaa*"} # 文字列のダブルクオテーションと{}を忘れない
+# 中身を検索
+$grepFile = $file | Select-String "bbb" -Encoding default -CaseSensitive
+$grepFile

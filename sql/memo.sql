@@ -11,6 +11,7 @@ WHERE table_catalog = 'TestDB' --DB名
 AND table_schema = 'public' --スキーマ名
 AND data_type = 'character varying' --型名
 AND column_name LIKE '%_ID%'; --検索したいカラム名
+--¥d tblAでも可能
 
 ----------------------------
 --同じ列名のデータを検索
