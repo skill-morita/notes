@@ -1,0 +1,18 @@
+//ブラウザを起動して取得する
+DIM ie = CREATEOLEOBJ("InternetExplorer.Application")
+
+//開かれたブラウザを取得する
+DIM ie = GETACTIVEOLEOBJ("InternetExplorer.Application", "ページタイトル")
+
+//Frameを取得
+//<frame name="fr"></frame>
+Dim fr = IEGETFRAME(IE, "fr")
+
+//onChangeを発生させる
+DIM ie = CREATEOLEOBJ("InternetExplorer.Application")
+DIM obj = ie.document.getElementsByName("aaa")[0];
+obj.onChange()
+
+//配列の引数
+function hoge(str[]){
+}
