@@ -46,4 +46,22 @@ INSERT INTO TblA (ColKey, ColA)
 	SELECT val_Key, val_ColA From TblA
 	WHERE NOT EXISTS (
 		SELECT ColKey FROM upsert
-	);
+);
+
+----------------------------
+--UPDATEでTableAの値をTableBに反映する
+----------------------------
+--PostgreSQL
+UPDATE TableA
+SET
+	colA = TableB.colB,
+	colA2 = TableB.colB2
+FROM TableB
+WHERE TableA.id = TableB.id;
+--MySql
+UPDATE TableA, TableB
+SET
+	TableA.colA = TableB.colB,
+	TableA.colA2 = TableB.colB2
+FROM TableB
+WHERE TableA.id = TableB.id;
