@@ -4,6 +4,20 @@ Write-Host "Hello World!"
 # 変数は変数だけ書くと表示される
 $files
 
+# 連想配列
+$hash = @{}
+$hash.add("key", "val")
+$hash.Remove("key")
+$hash2 = @{
+    "key1" = "val1"
+    "key2" = "val2"
+}
+$hash2["key1"] = "val1A"
+$hash2.Keys
+$hash2.ContainsKey("key1")
+$hash2.Values
+$hash2.ContainsValue("key1")
+
 # 指定フォルダ配下のファイルオブジェクトリスト取得
 $path = "C:\TEMP"
 $files = Get-ChildItem $path\*.xls*
