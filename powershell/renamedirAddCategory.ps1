@@ -13,7 +13,21 @@ $TARGET_DIR = "C:\_git\__worktmp\"
 # 共通部品
 . .\common\module.ps1
 
-function main ($fileArgs){
+function main ([string]$dirPath, [string]$oldnm, [string]$addStr){
+    # フォルダ名変更
+    $newnm = ""
+
+    if (($oldnm).Substring(0, 1) -eq "_") {
+        $newnm = $addStr + $oldnm
+    } else {
+        $newnm = $addStr + "_" + $oldnm
+    }
+
+    Rename-Item -Path $dirPath -NewName $newnm
+    Write-ErrorLog
+}
+
+function inputCondition {
     # カテゴリ追加する場合↓----------------
     # 配布方法
     [int]$category = (Read-Host カテゴリ:1 室内、2 室外、3 抽象／4 洋風、5 和風、6 中華、7 現代、8 植物、9 シンプル、10 かわいい、11きれい)
@@ -39,28 +53,18 @@ function main ($fileArgs){
     # カテゴリ追加する場合↑----------------
 
     # カテゴリ連結
-    $addStr = "_" + ($addAry -join "_")
-    
-    # フォルダ名変更
-    $newnm = ""
-    $oldnm = $fileArgs.Name
-    if (($oldnm).Substring(0, 1) -eq "_") {
-        $newnm = $addStr + $oldnm
-    } else {
-        $newnm = $addStr + "_" + $oldnm
-    }
-
-    Rename-Item -Path $fileArgs.FullName -NewName $newnm
-    Write-ErrorLog
+    return "_" + ($addAry -join "_")
 }
 
 # -------------------------------------------
 # 実行
 # -------------------------------------------
 # D&D
+$addDirStr = inputCondition
 $Args | ForEach-Object {
     $item = Get-Item -LiteralPath $_
     if($item.PSIsContainer){
-        main($item)
+        # ファイルオブジェクトで渡すとパスが消える
+        main $item.FullName $item.Name $addDirStr
     }
 }
