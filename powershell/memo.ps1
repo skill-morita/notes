@@ -100,3 +100,12 @@ function ErrorLog {
     Write-Output $Error[0].Exception.Message | Out-File -FilePath $logPath -Force
     $Error.Clear()
 }
+
+# 入力したい
+$usernm = (Read-Host ユーザー名の入力)
+$usernm
+
+# 動的配列
+$ary = @()
+$ary += "apple"
+$ary += "orange"
