@@ -23,10 +23,10 @@ function main {
         $dirnm = ($_.FullName).Replace($EXT, "")
         # zip展開
         Expand-Archive -Path $_.FullName -DestinationPath $dirnm 
-        ErrorLog
+        Write-ErrorLog
         # 展開したフォルダにzipを移動
         Move-Item $_.FullName $dirnm
-        ErrorLog
+        Write-ErrorLog
     }
 }
 

@@ -1,5 +1,5 @@
 ﻿# ===========================================
-# フォルダ名にカテゴリ追加
+# フォルダ名にカテゴリ追加(ユーザー)
 # _カテゴリ_カテゴリ_元のフォルダ名
 # ===========================================
 # -------------------------------------------
@@ -18,11 +18,11 @@ function main {
     # 配布方法
     [int]$dist = (Read-Host 配布方法:1 一般、2 要ログ)
     [string]$distnm = ""
-    if ($dist -eq 1) {
-        $distnm = "一般"
-    } else {
-        $distnm = "要ログ"
+    switch ($dist) {
+        1 {$distnm = "一般"; break}
+        2 {$distnm = "要ログ"; break}
     }
+
     # ユーザー名
     [string]$usernm = (Read-Host 配布者)
 
@@ -48,7 +48,7 @@ function main {
             $newnm = $addStr + "_" + $oldnm
         }
         Rename-Item -Path $_.FullName -NewName $newnm
-        ErrorLog
+        Write-ErrorLog
     }
 }
 

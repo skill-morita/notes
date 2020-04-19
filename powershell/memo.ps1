@@ -94,7 +94,7 @@ $grepFile = $file | Select-String "bbb" -Encoding default -CaseSensitive
 $grepFile
 
 # ログ出力
-function ErrorLog {
+function Write-ErrorLog {
     # 実行中スクリプトファイル名
     $logPath = $TARGET_DIR + $script:MyInvocation.MyCommand.Name + ".log"
     Write-Output $Error[0].Exception.Message | Out-File -FilePath $logPath -Force
@@ -109,3 +109,10 @@ $usernm
 $ary = @()
 $ary += "apple"
 $ary += "orange"
+
+# D & D
+$Args | ForEach-Object{ # ArgsがD&Dしたファイルやフォルダ
+    Write-Host $_.GetType()
+    $item = Get-Item -LiteralPath $_ # パスにスペースが有っても1まとまりとして認識する
+    Write-Host $item.FullName
+}

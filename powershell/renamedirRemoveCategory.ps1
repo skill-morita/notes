@@ -27,7 +27,7 @@ function main {
         $newnm = $reg.Replace($_.Name, "", 1)
         # フォルダ名変更
         Rename-Item -Path $_.FullName -NewName $newnm
-        ErrorLog
+        Write-ErrorLog
     }
 }
 
