@@ -1,0 +1,13 @@
+{
+    // Powershellで現在開いているファイルでデバッグ実行するための設定
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "PowerShell: Launch corrent file",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "cwd": "${fileDirname}"
+        }
+    ]
+}
