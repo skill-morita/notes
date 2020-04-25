@@ -5,6 +5,7 @@
 Write-Host "Hello World!"
 
 # 変数は変数だけ書くと表示される
+# スネークケース
 $usernm = "Mike"
 $usernm
 
