@@ -30,7 +30,7 @@ function main ([string]$dirPath, [string]$oldnm, [string]$addStr){
 function inputCondition {
     # カテゴリ追加する場合↓----------------
     # 配布方法
-    [int]$category = (Read-Host カテゴリ:1 室内、2 室外、3 抽象／4 洋風、5 和風、6 中華、7 現代、8 植物、9 シンプル、10 かわいい、11きれい)
+    [int]$category = (Read-Host カテゴリ:1 室内、2 室外、3 抽象／4 洋風、5 和風、6 中華、7 現代、8 植物、9 シンプル、10 かわいい、11 きれい／101 スカイドーム)
     [string]$categorynm = ""
 
     switch ($category) {
@@ -45,6 +45,7 @@ function inputCondition {
         9 {$categorynm = "シンプル"; break}
         10 {$categorynm = "かわいい"; break}
         11 {$categorynm = "きれい"; break}
+        101 {$categorynm = "skydome"; break}
     }
 
     # 追加用の空配列
