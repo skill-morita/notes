@@ -12,6 +12,9 @@ $usernm
 [int]$age = 1
 $age
 
+# 文字列連結などは括弧で括らないと+がパラメータ扱いでエラーになる
+Write-Host ("Hello" + "World!")
+
 # 関数の書き方
 function func {
     param (
