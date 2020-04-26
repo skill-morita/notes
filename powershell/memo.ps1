@@ -110,6 +110,8 @@ function main_measyre ($path) {
     Measure-Command {
         Get-ChildItem $path\*.xls*
     }
+    # 数を数える
+    (Get-ChildItem -Path $path\*.xls* -File | Measure-Object).Count
 }
 
 # ログ出力
