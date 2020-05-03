@@ -13,13 +13,16 @@
 # -------------------------------------------
 # 既に開いているIEを取得
 function GetExistIE {
+    param(
+        $access_url
+    )
     # シェルを取得
     $shell = New-Object -ComObject Shell.Application
 
     # IE取得
     $ie = $shell.Windows() |
         Where-Object { $_.Name -eq "Internet Explorer" } |
-            Where-Object { $_.LocationURL -like $ACCESS_URL } |
+            Where-Object { $_.LocationURL -like $access_url } |
                 Select-Object -First 1
 
     return $ie
@@ -109,8 +112,28 @@ function SetElm {
         [mshtml.IHTMLElement]$elm,
         $val
     )
-    $elm.value = [string]$val
+    if ($elm -eq $null) {
+        Write-Host "null"
+        break;
+    }
+
+    if ($elm.tagName -eq "textarea") {
+        $elm.textContent = [string]$val
+    } else {
+        $elm.value = [string]$val
+    }
     $elm.fireEvent("onchange")
+    Start-Sleep 1
+}
+
+function SetRadio {
+    param (
+        [System.Object[]]$elms,
+        [int]$cnt
+    )
+    $elms[$cnt].checked = $true;
+
+    $elms[$cnt].fireEvent("onchange")
     Start-Sleep 1
 }
 
@@ -119,15 +142,14 @@ function ClearElm {
     param (
         [mshtml.IHTMLElement]$elm
     )
-    $elm.value = ""
-    $elm.fireEvent("onchange")
-    Start-Sleep 1
+    SetElm $elm ""
 }
 
 # 最大値入力
 function CreateMaxLength {
     param (
-        [mshtml.IHTMLElement]$elm
+        [mshtml.IHTMLElement]$elm, 
+        $val
     )
-    return "X" * $elm.maxLength
+    return $val * $elm.maxLength
 }

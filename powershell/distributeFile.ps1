@@ -22,7 +22,7 @@ function main {
         # ファイルコピー
         $_.FullName
         Copy-Item -Path $srcFilepath $_.FullName
-        Write-ErrorLog
+        Write-ErrorLog $TARGET_DIR
     }
 }
 

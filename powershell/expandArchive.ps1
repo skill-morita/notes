@@ -5,7 +5,8 @@
 # 定数
 # -------------------------------------------
 # 処理フォルダ
-$TARGET_DIR = "C:\_git\__worktmp\"
+# $TARGET_DIR = "C:\_git\__worktmp\"
+$TARGET_DIR = "C:\_git\__worktmp\______temp\"
 # 拡張子
 $EXT = ".zip"
 
@@ -23,10 +24,10 @@ function main {
         $dirnm = ($_.FullName).Replace($EXT, "")
         # zip展開
         Expand-Archive -Path $_.FullName -DestinationPath $dirnm 
-        Write-ErrorLog
+        Write-ErrorLog $TARGET_DIR
         # 展開したフォルダにzipを移動
         Move-Item $_.FullName $dirnm
-        Write-ErrorLog
+        Write-ErrorLog $TARGET_DIR
     }
 }
 
