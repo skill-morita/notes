@@ -1,9 +1,6 @@
 #======================================
 # 基本
 #======================================
-# コンソール表示
-Write-Host "Hello World!"
-
 # 変数は変数だけ書くと表示される
 # スネークケース
 $usernm = "Mike"
@@ -105,7 +102,16 @@ $CountryList
 #======================================
 # ログなど
 #======================================
-function main_measyre ($path) {
+function main_log {
+    # コンソール表示
+    Write-Host "Hello World!"
+    # Write-Hostの亜種(文字色などが変わる)
+    Write-Debug "デバッグ中" # デバッグ：デバッグ中
+    Write-Warning "警告です" # 警告：警告です
+    Write-Error "エラーです" # Write-Error "エラーです"  : エラーです
+    # パイプラインで渡したい時はWrite-Host使えないのでWrite-Out
+}
+function main_measure ($path) {
     # 時間を計測する
     Measure-Command {
         Get-ChildItem $path\*.xls*
