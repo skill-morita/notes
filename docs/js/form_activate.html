@@ -1,0 +1,73 @@
+---
+layout: default
+---
+
+<body>
+    <script src="./form_activate.js"></script>
+    <main>
+        <h1>Javascriptでフォーム活性非活性</h1>
+        <form>
+            <dl>
+                <dt>
+                    <label for="text1">TEXT</label>
+                </dt>
+                <dd>
+                    <input type="text" id="text1">
+                </dd>
+                <dt>
+                    <label for="radio1">RadioButton</label>
+                </dt>
+                <dd>
+                    <input type="radio" name="radio1" id="r1">radio1
+                    <input type="radio" name="radio1" id="r2">radio2
+                </dd>
+                <dt>
+                    <label for="check1">CheckBox</label>
+                </dt>
+                <dd>
+                    <input type="checkbox" name="check1" id="c1">check1
+                    <input type="checkbox" name="check1" id="c2">check2
+                    <input type="checkbox" name="check1" id="c3">check3
+                </dd>
+                <dt>
+                    <label for="select1">Select</label>
+                </dt>
+                <dd>
+                    <select id="select1">
+                        <option value="1">option1</option>
+                        <option value="2">option2</option>
+                        <option value="3">option3</option>
+                    </select>
+                </dd>
+            </dl>
+            <dl>
+                <dt>display</dt>
+                <dd>
+                    <input type="button" value="none" onclick="setNonDisplayForms(true)">
+                    <input type="button" value="block" onclick="setNonDisplayForms(false)">
+                </dd>
+                <dt>visibility</dt>
+                <dd>
+                    <input type="button" value="hidden" onclick="setNonVisibilityForms(true)">
+                    <input type="button" value="visible" onclick="setNonVisibilityForms(false)">
+                </dd>
+                <dt>disabled</dt>
+                <dd>
+                    <input type="button" value="true" onclick="setDisabledForms(true)">
+                    <input type="button" value="false" onclick="setDisabledForms(false)">
+                </dd>
+                <dt>readonly</dt>
+                <dd>
+                    <input type="button" value="true" onclick="setReadonlyForms(true)">
+                    <input type="button" value="false" onclick="setReadonlyForms(false)">
+                </dd>
+            </dl>
+            <div>
+                <input type="submit" value="submit">
+            </div>
+        </form>
+    </main>
+    <footer>
+        <a href="../index.html">TOP</a>
+    </footer>
+</body>
