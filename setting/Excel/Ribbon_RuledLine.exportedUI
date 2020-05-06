@@ -1,0 +1,59 @@
+<mso:cmd app="Excel" dt="1" />
+<mso:customUI xmlns:x1="TFCOfficeShim.Connect.15" xmlns:mso="http://schemas.microsoft.com/office/2009/07/customui">
+	<mso:ribbon>
+		<mso:qat>
+			<mso:sharedControls>
+				<mso:control idQ="mso:FileNewDefault" visible="false"/>
+				<mso:control idQ="mso:FileOpenUsingBackstage" visible="false"/>
+				<mso:control idQ="mso:FileSave" visible="true"/>
+				<mso:control idQ="mso:FileSendAsAttachment" visible="false"/>
+				<mso:control idQ="mso:FilePrintQuick" visible="false"/>
+				<mso:control idQ="mso:PrintPreviewAndPrint" visible="false"/>
+				<mso:control idQ="mso:Spelling" visible="false"/>
+				<mso:control idQ="mso:Undo" visible="true"/>
+				<mso:control idQ="mso:Redo" visible="true"/>
+				<mso:control idQ="mso:SortAscendingExcel" visible="false"/>
+				<mso:control idQ="mso:SortDescendingExcel" visible="false"/>
+				<mso:control idQ="mso:PointerModeOptions" visible="false"/>
+				<mso:control idQ="mso:EqualSign" visible="true"/>
+				<mso:control idQ="mso:Calculator" visible="true"/>
+				<mso:control idQ="mso:ObjectsSelect" visible="true"/>
+				<mso:control idQ="mso:ShapesInsertGallery" visible="true"/>
+				<mso:control idQ="mso:ObjectEditPoints" visible="true"/>
+			</mso:sharedControls>
+		</mso:qat>
+		<mso:tabs>
+			<mso:tab id="mso_c1.253320F5" label="罫線​​・色" insertAfterQ="x1:IDC_TEAM_TAB">
+				<mso:group id="mso_c2.25332124" label="罫線​​" imageMso="ViewGridlinesFrontPage" autoScale="true">
+					<mso:control idQ="mso:BorderDrawLine" visible="true"/>
+					<mso:control idQ="mso:BorderDrawGrid" visible="true"/>
+					<mso:control idQ="mso:BorderErase" visible="true"/>
+					<mso:control idQ="mso:BorderStyle" visible="true"/>
+					<mso:gallery idQ="mso:BorderColorPickerExcel" showInRibbon="false" visible="true"/>
+					<mso:control idQ="mso:BorderNone" visible="true"/>
+					<mso:control idQ="mso:BordersAll" visible="true"/>
+					<mso:control idQ="mso:BorderTop" visible="true"/>
+					<mso:control idQ="mso:BorderBottom" visible="true"/>
+					<mso:control idQ="mso:BorderLeft" visible="true"/>
+					<mso:control idQ="mso:BorderRight" visible="true"/>
+					<mso:control idQ="mso:BorderInsideVertical" visible="true"/>
+					<mso:control idQ="mso:BorderInsideHorizontal" visible="true"/>
+					<mso:control idQ="mso:BorderInside" visible="true"/>
+					<mso:control idQ="mso:BorderOutside" visible="true"/>
+					<mso:control idQ="mso:BorderThickOutside" visible="true"/>
+					<mso:control idQ="mso:BorderThickBottom" visible="true"/>
+					<mso:control idQ="mso:BorderDoubleBottom" visible="true"/>
+					<mso:control idQ="mso:BorderTopAndBottom" visible="true"/>
+					<mso:control idQ="mso:BorderTopAndThickBottom" visible="true"/>
+					<mso:control idQ="mso:BorderTopAndDoubleBottom" visible="true"/>
+					<mso:control idQ="mso:BorderDiagonalUp" visible="true"/>
+					<mso:control idQ="mso:BorderDiagonalDown" visible="true"/>
+                    <mso:gallery idQ="mso:CellFillColorPicker" showInRibbon="false" visible="true" />
+                    <mso:control idQ="mso:FontShadingColorMoreColorsDialog" visible="true" />
+                    <mso:gallery idQ="mso:FontColorPicker" showInRibbon="false" visible="true" />
+                    <mso:control idQ="mso:FontColorCycle" visible="true" />
+				</mso:group>
+			</mso:tab>
+		</mso:tabs>
+	</mso:ribbon>
+</mso:customUI>
