@@ -19,4 +19,4 @@ Public Sub Finalize()
     End With
 End Sub
 
-'TODO FƒƒOˆ—‚ð’Ç‰Á‚·‚é
+'TODO ï¼šãƒ­ã‚°å‡¦ç†ã‚’è¿½åŠ ã™ã‚‹
