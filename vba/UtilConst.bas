@@ -1,7 +1,7 @@
 Attribute VB_Name = "UtilConst"
 '*******************************************************
 'UtilConst
-'Note:  íËêî
+'Note:  ÂÆöÊï∞
 '*******************************************************
 Option Explicit
 '-----------------------------------------
@@ -17,9 +17,9 @@ Public Const SEL As String = "SEL"
 Public Const CLR_BLACK As Long = 0
 Public Const CLR_RED As Long = 255
 Public Const CLR_YELLOW As Long = 65535
-Public Const CLR_SCUMBLUE As Long = 12611584 'ê¬
-Public Const CLR_SKYBLUE As Long = 16777164 'êÖêF
-Public Const CLR_LIGHTGRAY As Long = 14277081 'äDêF
+Public Const CLR_SCUMBLUE As Long = 12611584 'Èùí
+Public Const CLR_SKYBLUE As Long = 16777164 'Ê∞¥Ëâ≤
+Public Const CLR_LIGHTGRAY As Long = 14277081 'ÁÅ∞Ëâ≤
 Public Const CLR_ORANGE As Long = 9420794
 '-----------------------------------------
 'COLORINDEX
