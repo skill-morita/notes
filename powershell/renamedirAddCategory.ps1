@@ -5,52 +5,65 @@
 # -------------------------------------------
 # 定数
 # -------------------------------------------
-$TARGET_DIR = "C:\_git\__worktmp\"
-
+$TARGET_DIR = "C:\_git\__worktmp\______temp"
 # -------------------------------------------
 # 関数
 # -------------------------------------------
 # 共通部品
 . .\common\module.ps1
 
-function main ([string]$dirPath, [string]$oldnm, [string]$addStr){
+# フォルダ名頭に
+function RenameDirAddPrefix {
+    param (
+        [System.IO.DirectoryInfo]$dirinfo,
+        [string]$prefix
+    )
     # フォルダ名変更
     $newnm = ""
-
+    $oldnm = $dirinfo.Name
     if (($oldnm).Substring(0, 1) -eq "_") {
-        $newnm = $addStr + $oldnm
+        $newnm = $prefix + $oldnm 
     } else {
-        $newnm = $addStr + "_" + $oldnm
+        $newnm = $prefix + "_" + $oldnm 
     }
 
-    Rename-Item -Path $dirPath -NewName $newnm
-    Write-ErrorLog
+    Rename-Item -Path $dirinfo.FullName -NewName $newnm
+    Write-ErrorLog $TARGET_DIR
 }
 
-function inputCondition {
+# 追加カテゴリ名の入力
+function GetCategoryNameString {
     # カテゴリ追加する場合↓----------------
-    # 配布方法
-    [int]$category = (Read-Host カテゴリ:1 室内、2 室外、3 抽象／4 洋風、5 和風、6 中華、7 現代、8 植物、9 シンプル、10 かわいい、11 きれい／101 スカイドーム)
-    [string]$categorynm = ""
+    $category_ary = @()
+    $category_ary += "室内"
+    $category_ary += "室外"
+    $category_ary += "抽象"
+    $category_ary += "洋風"
+    $category_ary += "和風"
+    $category_ary += "中華"
+    $category_ary += "現代"
+    $category_ary += "植物"
+    $category_ary += "シンプル"
+    $category_ary += "かわいい"
+    $category_ary += "きれい"
+    $category_ary += "skydome"
+    $category_ary += "other"
 
-    switch ($category) {
-        1 {$categorynm = "室内"; break}
-        2 {$categorynm = "室外"; break}
-        3 {$categorynm = "抽象"; break}
-        4 {$categorynm = "洋風"; break}
-        5 {$categorynm = "和風"; break}
-        6 {$categorynm = "中華"; break}
-        7 {$categorynm = "現代"; break}
-        8 {$categorynm = "植物"; break}
-        9 {$categorynm = "シンプル"; break}
-        10 {$categorynm = "かわいい"; break}
-        11 {$categorynm = "きれい"; break}
-        101 {$categorynm = "skydome"; break}
+    $explain = "選択肢:"
+    for ($i = 0; $i -lt $category_ary.Count; $i++) {
+        $explain += ($category_ary[$i] + " " + $i + "/")
     }
 
+    # 配布方法
+    [int]$category_cd = (Read-Host $explain)
+    [string]$category_nm = $category_ary[$category_cd]
+    if ($category_nm -eq "other") {
+        $category_nm = (Read-Host "名称を入力")
+    }
+    Write-Host $category_nm 
     # 追加用の空配列
     $addAry = @()
-    $addAry += $categorynm
+    $addAry += $category_nm
     # カテゴリ追加する場合↑----------------
 
     # カテゴリ連結
@@ -60,12 +73,10 @@ function inputCondition {
 # -------------------------------------------
 # 実行
 # -------------------------------------------
-# D&D
-$addDirStr = inputCondition
-$Args | ForEach-Object {
-    $item = Get-Item -LiteralPath $_
-    if($item.PSIsContainer){
-        # ファイルオブジェクトで渡すとパスが消える
-        main $item.FullName $item.Name $addDirStr
-    }
+$addDirStr = GetCategoryNameString
+$files = Get-TargetDirs $TARGET_DIR $args
+if ($null -eq $files) {
+    exit
 }
+$files | ForEach-Object { RenameDirAddPrefix $_ $addDirStr }
+Pause
