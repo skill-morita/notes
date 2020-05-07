@@ -1,7 +1,9 @@
 /** ======================================================
  * イベントの発火
  * ====================================================== */
-
+// -------------------------------------------------------
+// 関数
+// -------------------------------------------------------
 /**
  * イベントハンドラのボタン設定
  * @param {string} btnid ボタンのID
@@ -20,6 +22,13 @@ function setEventButton(btnid, bgcolorcd, bdcolorcd) {
         // IE8以下
         btn.attachEvent('click', changeBgColor);
     }
+
+    //// elementではなく画面全体の時
+    // if (window.addEventListener) {
+    //     window.addEventListener('load', changeBgColor);
+    // } else if (window.attachEvent) { 
+    //     window.attachEvent('onload', changeBgColor);
+    // }
 }
 
 /**
@@ -38,6 +47,8 @@ function changeBorderColor(color) {
     document.querySelector('#colorChange').style.border = "solid 3px " + color;
 }
 
+// -------------------------------------------------------
+// main
 // -------------------------------------------------------
 // イベントの設定
 setEventButton('#btn1', '#4682b4', '#000080');
