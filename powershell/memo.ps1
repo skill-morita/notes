@@ -29,6 +29,7 @@ function func_simple ($usernm, $age) {
 } 
 # 引数を括弧でくくったり、カンマで区切ると配列の扱いになったリするので注意。
 # あくまでコマンド
+# func(usernm, $age)  # ×
 func $usernm $age 
 
 # ループ処理
@@ -65,6 +66,12 @@ function main_loop {
     Select-String -Path "C:/temp/*" -Pattern "/d{4}" # 指定フォルダ配下のファイル
     Select-String -Path "C:/temp/*.txt" -Pattern "/d{4}" # 指定フォルダ配下のtxtファイル
 }
+
+# メンバー確認
+# [Internet Explorer \- PowerShellでframe要素で構成されたhtmlページのドキュメント取得について｜teratail](https://teratail.com/questions/94800)
+$ie = New-Object -ComObject InternetExplorer.Application
+$ie.Navigate("https://www.google.com/")
+$ie.Document | Get-Member
 
 #======================================
 # 配列・リスト

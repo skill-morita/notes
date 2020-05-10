@@ -1,24 +1,52 @@
 ﻿# ===========================================
 # ブラウザの画面操作をする
-# 
-# [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
-# [MSHTML Reference - Internet Explorer C\+\+ Reference \(Windows\) \| Microsoft Docs](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/hh801968(v=vs.85))
 # ===========================================
-# -------------------------------------------
-# 定数
-# -------------------------------------------
-
 # -------------------------------------------
 # IE操作
 # -------------------------------------------
-# 既に開いているIEを取得
+<#
+.SYNOPSIS
+    IEを起動して取得
+.INPUTS 
+    access_url URL
+.OUTPUTS
+    IEオブジェクト
+.NOTES
+    [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
+#>
+function CreateIE {
+    [CmdletBinding()]
+    param (
+        [string]$access_url
+    )
+    $ie = New-Object -ComObject InternetExplorer.Application
+    $ie.Visible = $true
+    $ie.Navigate($access_url, 4)
+
+    $shell = New-Object -ComObject Shell.Application
+    while ($ie.Document -isnot [mshtml.HTMLDocumentClass]) {
+        $ie = $shell.Windows() | Where-Object { $_.HWND -eq $hwnd }
+    }
+    return $ie
+}
+
+<#
+.SYNOPSIS
+    既に開いているIEを取得
+.INPUTS 
+    access_url URL
+.OUTPUTS
+    IEオブジェクト
+.NOTES
+    [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
+#>
 function GetExistIE {
+    [CmdletBinding()]
     param(
-        $access_url
+        [string]$access_url
     )
     # シェルを取得
     $shell = New-Object -ComObject Shell.Application
-
     # IE取得
     $ie = $shell.Windows() |
         Where-Object { $_.Name -eq "Internet Explorer" } |
@@ -28,8 +56,30 @@ function GetExistIE {
     return $ie
 }
 
-# IEウインドウをアクティブ化する
+<#
+.SYNOPSIS
+    IEウインドウを終了する
+.INPUTS 
+    ie IEオブジェクト
+#>
+function CloseIE {
+    [CmdletBinding()]
+    param(
+        $ie
+    )
+    $ie.quit()
+}
+
+<#
+.SYNOPSIS
+    IEウインドウをアクティブ化する
+.INPUTS 
+    ie IEオブジェクト
+.NOTES
+    [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
+#>
 function ActivateIE {
+    [CmdletBinding()]
     param(
         $ie
     )
@@ -38,11 +88,51 @@ function ActivateIE {
     [Microsoft.VisualBasic.Interaction]::AppActivate($window_process.ID) | Out-Null
 }
 
-# Frame内DOMの取得
+<#
+.SYNOPSIS
+    IEウインドウを読込待機
+.INPUTS 
+    ie IEオブジェクト
+.NOTES
+    [PowerShellからIEを操作 \- Qiita](https://qiita.com/fujimohige/items/5aafe5604a943f74f6f0)
+#>
+function WaitIE {
+    [CmdletBinding()]
+    param (
+        $ie
+    )
+    While ($ie.Busy)
+    { Start-Sleep -s 1 } 
+}
+
+<#
+.SYNOPSIS
+    IEウインドウを再読込
+.INPUTS 
+    ie IEオブジェクト
+#>
+function ReloadIE {
+    [CmdletBinding()]
+    param (
+        $ie
+    )
+    $ie.Refresh()
+}
+
+<#
+.SYNOPSIS
+    Frame内DOMの取得
+.INPUTS 
+    ie IEオブジェクト
+    frameName FRAME名
+.OUTPUTS
+    DOMオブジェクト
+#>
 function GetFrameDocument {
     [CmdletBinding()]
     param (
-        $ie, $frameName
+        $ie, 
+        [string]$frameName
     )
     # DOM取得 
     $document = OverrideHTMLDocument($ie.Document)
@@ -52,8 +142,16 @@ function GetFrameDocument {
     return OverrideHTMLDocument $frame.contentDocument
 }
 
-# DOMのメソッドを再定義
-# [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
+<#
+.SYNOPSIS
+    DOMのメソッドを再定義
+.INPUTS 
+    document mshtml.HTMLDocumentClass
+.OUTPUTS
+    mshtml.HTMLDocumentClass
+.NOTES
+    [PowershellでInternetExplorerを操作する \- Qiita](https://qiita.com/flasksrw/items/a1ff5fbbc3b660e01d96)
+#>
 function OverrideHTMLDocument () {
     [CmdletBinding()]
     param (
@@ -106,8 +204,15 @@ function OverrideHTMLDocument () {
 # -------------------------------------------
 # フォーム入力
 # -------------------------------------------
-# TEXT、SELECT入力
+<#
+.SYNOPSIS
+    TEXT,TEXTAREAに値をセットする
+.INPUTS 
+    elm エレメント
+    val 値
+#>
 function SetElm {
+    [CmdletBinding()]
     param (
         [mshtml.IHTMLElement]$elm,
         $val
@@ -122,22 +227,45 @@ function SetElm {
     } else {
         $elm.value = [string]$val
     }
-    $elm.fireEvent("onchange")
+    if ($elm.dispatchEvent) {
+        # TODO: IE9以降
+    } elseif ($elm.fireEvent) {
+        # IE8以前
+        $elm.fireEvent("onchange")
+    }
     Start-Sleep 1
 }
 
+<#
+.SYNOPSIS
+    RADIOに値をセットする
+.INPUTS 
+    elm エレメント配列
+    val インデックス
+#>
 function SetRadio {
+    [CmdletBinding()]
     param (
         [System.Object[]]$elms,
         [int]$cnt
     )
-    $elms[$cnt].checked = $true;
-
-    $elms[$cnt].fireEvent("onchange")
+    $elm = $elms[$cnt]
+    $elm.checked = $true
+    if ($elm.dispatchEvent) {
+        # TODO: IE9以降
+    } elseif ($elm.fireEvent) {
+        # IE8以前
+        $elm.fireEvent("onchange")
+    }
     Start-Sleep 1
 }
 
-# TEXT、SELECT初期化
+<#
+.SYNOPSIS
+    TEXT,TEXTAREAを初期化
+.INPUTS 
+    elm エレメント
+#>
 function ClearElm {
     param (
         [mshtml.IHTMLElement]$elm
@@ -145,8 +273,17 @@ function ClearElm {
     SetElm $elm ""
 }
 
-# 最大値入力
+<#
+.SYNOPSIS
+    最大文字列取得
+.INPUTS 
+    elm エレメント
+    val 繰り返し文字列
+.OUTPUTS
+    最大文字列
+#>
 function CreateMaxLength {
+    [CmdletBinding()]
     param (
         [mshtml.IHTMLElement]$elm, 
         $val
