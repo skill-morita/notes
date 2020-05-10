@@ -99,6 +99,15 @@ $hash2.ContainsKey("key1")
 $hash2.Values
 $hash2.ContainsValue("key1")
 
+foreach ($item in $hash.GetEnumerator()) {
+    Write-Host $item.Key
+    Write-Host $item.Value
+}
+
+foreach ($key in $hash.Keys) {
+    Write-Host $hash[$key]
+}
+
 # 簡単にリストを定義する
 $CountryList = @"
 USA

@@ -78,7 +78,6 @@ function setDisabledForms(on) {
  */
 function setReadonlyForms(on) {
     // テキストボックス
-    // @ts-ignore
     setReadonlyText(document.getElementById("text1"), on);
     // ラジオボタン
     setReadonlyCheckOrRadio(document.getElementsByName("radio1"), on);
