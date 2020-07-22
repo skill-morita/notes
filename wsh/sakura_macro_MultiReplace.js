@@ -1,83 +1,67 @@
-// オプション
-var OPTION_FLG = 2 + 16;
-// 文字列リストファイルのパス
-var FILEPATH = "C:/temp/wordlist.txt";
-// 置換前文字列の列インデックス
-var PRE_COL = 0;
-// 置換後文字列の列インデックス
-var POS_COL = 1;
+/**
+ * @file sakura_macro_MultiReplace.js
+ * @author boppan
+ * @description 
+ * 複数単語の一括置換
+ * 参考: [【サクラエディタ】文字列を一括で複数置換する \- Qiita](https://qiita.com/MasayaOkuno/items/ba6bec13f01cdd78d909)
+ * 
+ * 1. 置換単語リストをクリップボードにコピーする
+ *     タブ区切りで左に置換前、右に置換後
+ *    【形式】
+ *      testA	test1
+ *      testB	test2
+ *      testC	test3
+ *  2. 置換したいタブをアクティブにする
+ *  3. マクロ実行
+ */
 // --------------------------------------------
-
-// オブジェクト準備
-var editor = Editor;
-
-main();
-
-// オブジェクト破棄
-editor = null;
-
+// setting
+// --------------------------------------------
+// [サクラエディタの置換オプション \| You Look Too Cool](https://stabucky.com/wp/archives/4678)
+// オプション 2:英大文字と小文字を区別する 16:置換ダイアログを自動的に閉じる
+var OPTION_FLG = 2 + 16;
+// --------------------------------------------
+// function
 // --------------------------------------------
 /**
  * 現在開いているタブの全文字列を、文字列リストで置換する
- * @returns 成否
  */
-function main() {
+function multiReplace(editor) {
 	try {
-		// 単語リスト読込
-		var wordList = ReadTextFile(FILEPATH);
-		if (wordList === null) {
-			return false;
-		}
-		
-		// 置換前文字列の長さで並び替え降順
-		//wordList.sort(function(a, b) {
-		//	if (a[PRE_COL].length > b[POS_COL].length) return -1;
-		//	if (a[PRE_COL].length < b[POS_COL].length) return 1;
-		//	return 0;
-		//});
+		// 単語リスト取得
+		var clip = editor.GetClipboard(0);
+		var wordList = clip.split('\r\n');
+
+		// 文字数で降順
+		wordList.sort(function (a, b) {
+			if (a.length > b.length) return -1;
+			if (a.length < b.length) return 1;
+			return 0;
+		});
 
 		// 順に一括置換
 		for (var i = 0; i < wordList.length; i++) {
-			editor.ReplaceAll(wordList[i][PRE_COL], wordList[i][POS_COL], OPTION_FLG);
+			var line = wordList[i].split('\t');
+			var oldStr = line[0];
+			var newStr = line[1];
+			if (typeof oldStr === 'string' && typeof newStr === 'string') {
+				editor.ReplaceAll(oldStr, newStr, OPTION_FLG);
+			}
 		}
 
 		// 再描画
 		editor.ReDraw(0);
 	} catch (error) {
-		Messagebox("ERROR:" + error, 0);
-		return false;
+		alert("ERROR:" + error);
 	}
 }
+// --------------------------------------------
+// main
+// --------------------------------------------
+// オブジェクト準備
+var editor = Editor;
 
-/**
- * ファイル読取
- * @param {String} filepath ファイパス
- * @returns {String[][]} 読み取り内容
- */
-function ReadTextFile(filepath) {
-	var fileSysObj = new ActiveXObject("Scripting.FileSystemObject");
+multiReplace(editor);
 
-	// ファイルを開く
-	var fileObj = fileSysObj.OpenTextFile(filepath, 1);
-	if (fileObj.AtEndOfStream) {
-		fileObj.Close();
-		Messagebox("ERROR:置換リストにテキストがありません", 0);
-		return null;
-	}
-Messagebox("a");
-
-	// テキスト読取
-	var text = fileObj.ReadAll();
-	fileObj.Close();
-	
-	// データを配列に加工
-	var res = [];
-	var lines = text.split("\r\n");
-	for (var i = 0; i < lines.length; i++) {
-		if(lines[i].length > 0){
-				res.push(lines[i].split(","));
-		}
-	}
-
-	return res;
-}
+// オブジェクト破棄
+editor = null;

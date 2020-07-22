@@ -90,3 +90,36 @@ function adoSaveText(filename, text, charset, overwrite) {
   stream.saveToFile(filename, overWriteFlg);
   stream.close();
 }
+
+/**
+ * ファイル読取
+ * @param {String} filepath ファイパス
+ * @returns {String[][]} 読み取り内容
+ */
+function ReadTextFile(filepath) {
+  var fileSysObj = new ActiveXObject("Scripting.FileSystemObject");
+
+  // ファイルを開く
+  var fileObj = fileSysObj.OpenTextFile(filepath, 1);
+  if (fileObj.AtEndOfStream) {
+    fileObj.Close();
+    alert("ERROR:置換リストにテキストがありません", 0);
+    return null;
+  }
+  alert("a");
+
+  // テキスト読取
+  var text = fileObj.ReadAll();
+  fileObj.Close();
+
+  // データを配列に加工
+  var res = [];
+  var lines = text.split("\r\n");
+  for (var i = 0; i < lines.length; i++) {
+    if (lines[i].length > 0) {
+      res.push(lines[i].split(","));
+    }
+  }
+
+  return res;
+}
