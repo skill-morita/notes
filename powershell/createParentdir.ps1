@@ -2,7 +2,7 @@
 # 同名の親フォルダを作成する
 #
 # 【使い方】
-# .\createParentdir.ps1 -workpath "C:\_git\__worktmp\______temp\"
+# .\createParentdir.ps1 -workpath C:\_git\__worktmp\______temp\
 # 
 # 【失敗したので親フォルダを削除したい】
 # 1. Everythingでフォルダ配下のファイル・フォルダ一覧を出す
