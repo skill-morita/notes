@@ -1,11 +1,30 @@
 ﻿# ===========================================
-# フォルダ名に親フォルダ(_を冒頭に追加)作成
+# 同名の親フォルダを作成する
+#
+# 【使い方】
+# .\createParentdir.ps1 -workpath "C:\_git\__worktmp\______temp\"
+# 
+# 【失敗したので親フォルダを削除したい】
+# 1. Everythingでフォルダ配下のファイル・フォルダ一覧を出す
+#     aaaaa1
+#     aaaaa2
+#     aaaaa1/bbbbb1
+#     aaaaa2/bbbbb2
+#     aaaaa1/bbbbb1/cccc1.txt
+#     aaaaa1/bbbbb1/cccc.2txt
+# 2. 子フォルダのみを選択し、別の場所へ切り取り貼り付け
+#     aaaaa1/bbbbb1
+#     aaaaa2/bbbbb2
+#     これらをxxxx1に移動
+#     xxxxx1/bbbbb1
+#     xxxxx1/bbbbb2
 # ===========================================
 # -------------------------------------------
-# 定数
+# パラメータ
 # -------------------------------------------
-# $TARGET_DIR = "C:\_git\__worktmp\"
-$TARGET_DIR = "C:\_git\__worktmp\______temp\"
+Param(
+    [ValidateSet("C:\_git\__worktmp\" , "C:\_git\__worktmp\______temp\")]$workpath #作業フォルダ
+)
 
 # -------------------------------------------
 # 関数
@@ -14,51 +33,25 @@ $TARGET_DIR = "C:\_git\__worktmp\______temp\"
 . .\common\module.ps1
 
 function main {
+    param (
+        $workpath_
+    )
     # フォルダ一覧取得 再帰なし
-    Get-ChildItem -Path $TARGET_DIR -Directory | ForEach-Object {
+    Get-ChildItem -Path $workpath_ -Directory | ForEach-Object {
         $newDir = (Split-Path $_.FullName -Parent) + "/_" + $_.Name
         # フォルダ作成
         New-Item $newDir -ItemType Directory -Force
         # 新しいフォルダに移動
         Move-Item -Path $_.FullName -Destination ($newDir + "/" + $_.Name)
-        Write-ErrorLog $TARGET_DIR
-    }
-}
-# 配下にフォルダが無い時のみ
-function main2 {
-    # 失敗したので親フォルダを削除したい
-    # 1. Everythingでフォルダ配下のファイル・フォルダ一覧を出す
-    #     aaaaa1
-    #     aaaaa2
-    #     aaaaa1/bbbbb1
-    #     aaaaa2/bbbbb2
-    #     aaaaa1/bbbbb1/cccc1.txt
-    #     aaaaa1/bbbbb1/cccc.2txt
-    # 2. 子フォルダのみを選択し、別の場所へ切り取り貼り付け
-    #     aaaaa1/bbbbb1
-    #     aaaaa2/bbbbb2
-    #     これらをxxxx1に移動
-    #     xxxxx1/bbbbb1
-    #     xxxxx1/bbbbb2
-
-    # フォルダ一覧取得 再帰なし
-    Get-ChildItem -Path $TARGET_DIR -Directory | ForEach-Object {
-        # 配下にフォルダがない場合
-        if ((Get-ChildItem -Path $_.FullName -Directory | Measure-Object).Count -eq 0) {
-            Write-Host $_.FullName
-
-            $newDir = (Split-Path $_.FullName -Parent) + "/_" + $_.Name
-            # フォルダ作成
-            New-Item $newDir -ItemType Directory -Force
-            # 新しいフォルダに移動
-            Move-Item -Path $_.FullName -Destination ($newDir + "/" + $_.Name)
-        }
-        Write-ErrorLog $TARGET_DIR
+        Write-ErrorLog $workpath_
     }
 }
 
 # -------------------------------------------
 # 実行
 # -------------------------------------------
-main
-# main2
+# パラメータ指定がない場合
+if ($null -eq $workpath) {
+    $workpath = "C:\_git\__worktmp\" 
+}
+main $workpath
