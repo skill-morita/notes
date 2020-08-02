@@ -1,10 +1,15 @@
 ﻿# ===========================================
-# 配下の各フォルダにファイル配布(not再帰)
+# 配下の各フォルダにファイル配布(フォルダを指定した場合は配下のファイルもコピー、配布先not再帰)
+# 
+# 【使い方】
+# .\distributeFile.ps1 -workpath C:\_git\__worktmp\______temp\
 # ===========================================
 # -------------------------------------------
-# 定数
+# パラメータ
 # -------------------------------------------
-$TARGET_DIR = "C:\_git\__worktmp\"
+Param(
+    [ValidateSet("C:\_git\__worktmp\" , "C:\_git\__worktmp\______temp\")]$workpath #作業フォルダ
+)
 
 # -------------------------------------------
 # 関数
@@ -15,18 +20,26 @@ $TARGET_DIR = "C:\_git\__worktmp\"
 # コピーファイルパス
 [string]$srcFilepath = (Read-Host コピーしたいファイルパス)
 function main {
+    param (
+        $workpath_
+    )
+
     # フォルダ一覧取得 再帰なし
-    $dirList = Get-ChildItem -Path $TARGET_DIR -Directory
+    $dirList = Get-ChildItem -Path $workpath_ -Directory
 
     $dirList | ForEach-Object {
         # ファイルコピー
         $_.FullName
-        Copy-Item -Path $srcFilepath $_.FullName
-        Write-ErrorLog $TARGET_DIR
+        Copy-Item -Path $srcFilepath $_.FullName -Recurse
+        Write-ErrorLog $workpath_
     }
 }
 
 # -------------------------------------------
 # 実行
 # -------------------------------------------
-main
+# パラメータ指定がない場合
+if ($null -eq $workpath) {
+    $workpath = "C:\_git\__worktmp\" 
+}
+main $workpath
