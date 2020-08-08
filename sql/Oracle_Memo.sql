@@ -49,4 +49,13 @@ WHERE
 
 -- JA16SJISTILDE：Shift-JIS
 
+----------------------------
+-- # 初期化パラメータの確認
+----------------------------
+-- これでヒットすればspfileで運用されている。パスも分かる。V$PARAMETERが初期化パラメータ。NAME = 'pfile'は無い。
+SELECT VALUE FROM V$PARAMETER WHERE NAME = 'spfile';
 
+-- spfileからpfileを作成したい
+CREATE PFILE='pfileの出力先フルパス' FROM SPFILE='作成元のspfileのフルパス'
+-- pfileからspfileを作成したい
+CREATE SPFILE='spfileの出力先フルパス' FROM PFILE='作成元のpfileのフルパス'
