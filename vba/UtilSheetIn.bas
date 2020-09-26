@@ -71,6 +71,14 @@ Public Sub SetActiveA1()
     wb.Sheets(1).Activate
 End Sub
 '-----------------------------------------
+'書式
+'-----------------------------------------
+Public Sub SetShrinkToFit(ByRef r As Range, ByVal flg As Boolean)
+    'セルの文字列をセル幅に合わせてすべて表示する
+    r.ShrinkToFit = flg
+End Sub
+
+'-----------------------------------------
 'クリア
 '-----------------------------------------
 Public Sub SetClearOnlyFormat(ByRef r As Range)

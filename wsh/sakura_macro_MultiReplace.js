@@ -24,7 +24,7 @@ var OPTION_FLG = 2 + 16;
 // function
 // --------------------------------------------
 /**
- * 現在開いているタブの全文字列を、文字列リストで置換する
+ * 現在選択中のタブの全文字列を、文字列リストで置換する
  */
 function multiReplace(editor) {
 	try {
@@ -32,7 +32,7 @@ function multiReplace(editor) {
 		var clip = editor.GetClipboard(0);
 		var wordList = clip.split('\r\n');
 
-		// 文字数で降順
+		// 文字数で降順(testABとtestAがあった場合、testABが優先される)
 		wordList.sort(function (a, b) {
 			if (a.length > b.length) return -1;
 			if (a.length < b.length) return 1;
@@ -45,6 +45,7 @@ function multiReplace(editor) {
 			var oldStr = line[0];
 			var newStr = line[1];
 			if (typeof oldStr === 'string' && typeof newStr === 'string') {
+				// TODO 単語が無い時の高速化
 				editor.ReplaceAll(oldStr, newStr, OPTION_FLG);
 			}
 		}

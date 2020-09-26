@@ -37,6 +37,16 @@ End Sub
 Public Sub カーソルA1移動()
     Call SetActiveA1
 End Sub
+'-----------------------------------------
+'書式
+'-----------------------------------------
+Public Sub 縮小表示OFF()
+    ' セルの文字列をセル幅に合わせてすべて表示する(リボンでは設定できない)
+    Call SetShrinkToFit(ActiveCell, False)
+End Sub
+Public Sub 縮小表示ON()
+    Call SetShrinkToFit(ActiveCell, True)
+End Sub
 
 '-----------------------------------------
 '色
